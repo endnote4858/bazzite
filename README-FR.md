@@ -54,7 +54,6 @@ Bazzite est construit à partir de [ublue-os/main](https://github.com/ublue-os/m
 - Thèmes optionnels GTK3/4 inspirés de celui de Valve, correspondant à Vapor et VGUI2 de SteamOS. Installez [Gradience](https://flathub.org/apps/com.github.GradienceTeam.Gradience) pour les utiliser.
 - [LatencyFleX](https://github.com/ishitatsuyuki/LatencyFleX), [vkBasalt](https://github.com/DadSchoorse/vkBasalt), [MangoHud](https://github.com/flightlessmango/Mangohud), et [OBS VkCapture](https://github.com/nowrep/obs-vkcapture) installés et disponibles par défaut.
 - [Switcheroo-Control patché](https://copr.fedorainfracloud.org/coprs/sentry/switcheroo-control_discrete/) pour corriger le basculement iGPU/dGPU cassé par défaut.
-- Support pour [Wallpaper Engine](https://www.wallpaperengine.io/en). <sub><sup>(Seulement sur KDE)</sup></sub>
 - [Extension de shell ROM Properties Page](https://github.com/GerbilSoft/rom-properties) incluse par défaut.
 - Support complet pour [Winesync/Fastsync/NTsync](https://github.com/Frogging-Family/wine-tkg-git/issues/936).
 - [Distrobox](https://github.com/89luca89/distrobox) préinstallé.
@@ -130,7 +129,6 @@ Variante conçue pour être utilisée comme alternative à SteamOS sur le SteamD
 - Profils d'affichage calibrés en couleur pour les écrans mats et réfléchissants du SteamDeck inclus.
 - Fonctionnalités pour utilisateurs avancés désactivées par défaut, notamment :
     - Service pour l'undervolting à faible risque du SteamDeck ainsi que des ordinateurs portables AMD  via [RyzenAdj](https://github.com/FlyGoat/RyzenAdj) et [Ryzen SMU](https://gitlab.com/leogx9r/ryzen_smu), voir `ryzenadj.service` et `/etc/default/ryzenadj`.
-    - Service pour limiter le niveau de charge maximal de la batterie, voir `batterylimit.service` et `/etc/default/batterylimit`. <sup><sub>(Fonctionne même lorsque l'appareil est éteint)</sub></sup>
     - Support intégré pour l'overclocking d'affichage. Par exemple, ajoutez `GAMESCOPE_OVERRIDE_REFRESH_RATE=40,70` à `/etc/environment`.
     - Vous avez modifié votre SteamDeck avec 32 Go de RAM ? Profitez du double de la quantité maximale de VRAM, appliqué automatiquement. <sup><sub>(Pourriez-vous partager vos compétences en soudure ?)</sub></sup>
 - Les services spécifiques au matériel du SteamDeck peuvent être désactivés en exécutant `ujust disable-bios-updates` et `ujust disable-firmware-updates` dans le terminal. Ils sont automatiquement désactivés sur le matériel non-Deck, et sur les Decks avec des écrans DeckHD ou des mods de 32 Go de RAM.
@@ -249,7 +247,7 @@ Découvrez nos [Newsletters](https://universal-blue.discourse.group/tag/bazzite-
 
 ## Packages personnalisés
 
-Les paquets portés de SteamOS et ChimeraOS, entre autres utilisés par Bazzite, sont construits sur Copr dans [bazzite](https://copr.fedorainfracloud.org/coprs/bazzite-org/bazzite/) et [bazzite-multilib](https://copr.fedorainfracloud.org/coprs/bazzite-org/bazzite-multilib/).
+Les paquets portés de SteamOS et ChimeraOS, entre autres utilisés par Bazzite, sont construits sur Copr dans [bazzite](https://copr.fedorainfracloud.org/coprs/ublue-os/bazzite/) et [bazzite-multilib](https://copr.fedorainfracloud.org/coprs/ublue-os/bazzite-multilib/).
 
 ## Vérification
 

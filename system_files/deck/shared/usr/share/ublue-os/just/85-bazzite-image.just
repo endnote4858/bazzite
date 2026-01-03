@@ -1,20 +1,5 @@
 # vim: set ft=make :
 
-# Enable BTRFS deduplication
-enable-deduplication:
-    systemctl enable btrfs-dedup@var-home.timer
-    systemctl enable btrfs-dedup@run-media-mmcblk0p1.timer
-
-# Install Handheld Controller Glyphs theme for hhd & CSS Loader (https://github.com/victor-borges/handheld-controller-glyphs)
-install-hhd-controller-glyph-theme:
-    #!/usr/bin/bash
-    if [ -d "$HOME/homebrew/themes" ]; then
-        rm -rf "$HOME/homebrew/themes/handheld-controller-glyphs"
-        git clone https://github.com/victor-borges/handheld-controller-glyphs.git --single-branch "$HOME/homebrew/themes/handheld-controller-glyphs"
-    else
-        echo 'Please install Decky Loader & CSS Loader first'
-    fi
-
 # Use EXT4 for SD Cards, allows use of SteamOS formatted SD cards
 switch-to-ext4:
     sudo sed -i 's@STEAMOS_BTRFS_SDCARD_FORMAT_FS="btrfs"@STEAMOS_BTRFS_SDCARD_FORMAT_FS="ext4"@g' /etc/default/steamos-btrfs
@@ -73,12 +58,25 @@ disable-sdgyrodsu:
 # runs ryzenadj --max-performance on AC power change
 enable-ryzenadj-max-performance:
     #/bin/bash
-    # credit to adolforegosa on discord for the original fix
+    # credit to adolforegosa on discord for the original fix and Katman for the script corrections
     echo 'this fix sets ryzenadj --max-performance whenever AC status changes to battery from plugged-in'
-    echo 'ACTION=="add|change", SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/bin/sh -c '/usr/bin/ryzenadj --max-performance'"' | sudo tee "/etc/udev/rules.d/99-ryzenadj-power-source-change.rules" > /dev/null
+    echo 'ACTION=="change", SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/bin/ryzenadj --max-performance"' | sudo tee "/etc/udev/rules.d/99-ryzenadj-power-source-change.rules" > /dev/null
 
     sudo udevadm control --reload-rules
-    echo 'installation complete. Reboot to take effect'
+
+    sudo echo "[Unit]" > /etc/systemd/system/max-perf-boot.service
+    sudo echo "Description=Apply RyzenAdj max performance at boot" >> /etc/systemd/system/max-perf-boot.service
+    sudo echo "" >> /etc/systemd/system/max-perf-boot.service
+    sudo echo "[Service]" >> /etc/systemd/system/max-perf-boot.service
+    sudo echo "Type=oneshot" >> /etc/systemd/system/max-perf-boot.service
+    sudo echo "ExecStart=/usr/bin/ryzenadj --max-performance" >> /etc/systemd/system/max-perf-boot.service
+    sudo echo "" >> /etc/systemd/system/max-perf-boot.service
+    sudo echo "[Install]" >> /etc/systemd/system/max-perf-boot.service
+    sudo echo "WantedBy=multi-user.target" >> /etc/systemd/system/max-perf-boot.service
+
+    sudo systemctl daemon-reload
+    sudo systemctl enable max-perf-boot.service
+    echo 'Installation complete. Reboot to take effect'
 
 # toggles password prompt feedback in terminal, where sudo password prompts will display asterisks when enabled
 toggle-password-feedback ACTION="":
@@ -105,30 +103,17 @@ disable-ryzenadj-max-performance:
     #/bin/bash
     sudo rm /etc/udev/rules.d/99-ryzenadj-power-source-change.rules
     sudo udevadm control --reload-rules
-    echo 'removal complete'
+    sudo systemctl stop max-perf-boot.service
+    sudo systemctl disable --now max-perf-boot.service
+    sudo rm /etc/systemd/system/max-perf-boot.service
+    sudo systemctl daemon-reload
+    echo 'removal complete, reboot to take effect.'
 
 # Re-enable input remapper feature on non-desktop images
 restore-input-remapper:
     systemctl enable --now input-remapper.service && \
     cp /usr/share/applications/input-remapper-gtk.desktop ~/.local/share/applications/input-remapper-gtk.desktop && \
     sed -i '/NoDisplay=true/d' ~/.local/share/applications/input-remapper-gtk.desktop
-
-# Install firmware files needed for ayaneo and orangepi speakers
-install-speaker-firmware ACTION="":
-    #!/bin/bash
-    source /usr/lib/ujust/ujust.sh
-    OPTION={{ ACTION }}
-    FIRMWARE_SCRIPT="https://raw.githubusercontent.com/hhd-dev/hwinfo/refs/heads/master/firmware/bazzite-speaker.sh"
-    curl -o "/tmp/bazzite-speaker.sh" "$FIRMWARE_SCRIPT" && cat /tmp/bazzite-speaker.sh | pygmentize -l bash -O style=emacs
-    echo ""
-    echo "Run the above script using elevated permissions?"
-    if [ "$OPTION" == "" ]; then
-      OPTION=$(Choose "Yes" "No")
-    fi
-    if [[ "${OPTION,,}" =~ ^yes || "${OPTION,,}" =~ ^-y ]]; then
-      sudo bash /tmp/bazzite-speaker.sh
-    fi
-    rm /tmp/bazzite-speaker.sh
 
 # Configure video overrides for Steam
 configure-override-videos ACTION="":
@@ -183,13 +168,6 @@ restore-virtual-keyboard:
         cp /usr/share/ublue-os/backup/com.github.maliit.keyboard.desktop ~/.local/share/applications/com.github.maliit.keyboard.desktop
       fi
     fi
-
-# Install hhd main branch locally until reboot, helpful for hhd testing and debugging. (rename to install-hhd-dev if we unhide)
-_hhd-dev:
-    #!/usr/bin/bash
-    source /usr/lib/ujust/ujust.sh
-    echo "Installing ${b}Handheld Daemon${n} locally until next reboot."
-    curl -L https://raw.githubusercontent.com/hhd-dev/hhd/master/local_hhd.sh | bash
 
 _toggle-autologin:
     #!/usr/bin/bash

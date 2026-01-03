@@ -58,7 +58,6 @@ Bazzite es creado con [ublue-os/main](https://github.com/ublue-os/main) y [ublue
 - También se incluyen temas opcionales de GTK3/4 inspirados en Valve, que igualan a los temas Vapor y VGUI2 de SteamOS. Para poderlos utilizar, solo tienes que instalar [Gradience](https://flathub.org/apps/com.github.GradienceTeam.Gradience).
 - [LatencyFleX](https://github.com/ishitatsuyuki/LatencyFleX), [vkBasalt](https://github.com/DadSchoorse/vkBasalt), [MangoHud](https://github.com/flightlessmango/Mangohud), y [OBS VkCapture](https://github.com/nowrep/obs-vkcapture) instalados y disponibles por defecto.
 - Utilizamos [TuneD](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/monitoring_and_managing_system_status_and_performance/getting-started-with-tuned_monitoring-and-managing-system-status-and-performance) en lugar de PPD, para una integración completa con GNOME, KDE, y Game Mode. Esta es una herramienta tan increiblemente poderosa, que Red Hat ofrece [clases para aprender a utilizarla](https://www.redhat.com/en/services/training/rh442-red-hat-enterprise-performance-tuning).
-- Soporte para [Wallpaper Engine](https://www.wallpaperengine.io/en). <sub><sup>(Solo en KDE)</sup></sub>
 - Incluida una [extensión de la shell para mostrar las propiedades de ROMs](https://github.com/GerbilSoft/rom-properties) (usados para la emulación de consolas) en el navegador de archivos.
 - Soporte completo para [Winesync/Fastsync/NTsync](https://github.com/Frogging-Family/wine-tkg-git/issues/936).
 - [Distrobox](https://github.com/89luca89/distrobox) pre-instalado.
@@ -137,7 +136,6 @@ Esta variante esta diseñada para usarse como una alternativa de SteamOS en la S
 - Se incluyen perfiles de color calibrados para los diferentes tipos de pantalla de la Steam Deck, mate o glossy.
 - Características para usuarios avanzados que vienen desactivadas por defecto, las cuales incluyen:
   - Un servicio de bajo riesgo para reducir el voltaje de la Steam Deck gracias a [RyzenAdj](https://github.com/FlyGoat/RyzenAdj) y [Ryzen SMU](https://gitlab.com/leogx9r/ryzen_smu), véase `ryzenadj.service` y `/etc/default/ryzenadj`.
-  - Un servicio que limita el nivel máximo de recarga de la batería, véase `batterylimit.service` y `/etc/default/batterylimit`. <sup><sub>(Funciona incluso cuando el dispositivo esta apagado)</sub></sup>
   - Soporte incorporado para el overclock de la pantalla, es decir, para incrementar la tasa de refresco que el panel tiene por defecto (60Hz en modelos LCD). Por ejemplo, añade `GAMESCOPE_OVERRIDE_REFRESH_RATE=40,70` a `/etc/environment`.
   - La habilidad de utilizar el servidor gráfico X11 en vez de Wayland, si así se desea, tan solo editando `/etc/default/desktop-wayland`.
   - ¿Aplicaste el mod de 32 GB de memoria RAM en tu Steam Deck?, disfruta del doble de la cantidad máxima de VRAM, el cual es aplicado automáticamente. <sup><sub>(Hablando de, ¿crees que podrías compartirnos semejante habilidad para soldar?)</sub></sup>

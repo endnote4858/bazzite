@@ -11,7 +11,7 @@ REGISTRY = "docker://ghcr.io/ublue-os/"
 IMAGES = [
     "bazzite",
     "bazzite-gnome",
-    # "bazzite-deck",
+    "bazzite-deck",
     "bazzite-deck-gnome",
     "bazzite-deck-nvidia",
     "bazzite-deck-nvidia-gnome",
@@ -59,9 +59,12 @@ From previous `{target}` version `{prev}` there have been the following changes.
 | **Firmware** | {pkgrel:atheros-firmware} |
 | **Mesa** | {pkgrel:mesa-filesystem} |
 | **Gamescope** | {pkgrel:gamescope} |
+| **Bazaar** | {pkgrel:bazaar} |
+| **Ptyxis** | {pkgrel:ptyxis} |
 | **Gnome** | {pkgrel:gnome-control-center-filesystem} |
 | **KDE** | {pkgrel:plasma-desktop} |
-| **[HHD](https://github.com/hhd-dev/hhd)** | {pkgrel:hhd} |
+| **Nvidia** | {pkgrel:nvidia-kmod-common} |
+| **Nvidia LTS** | {pkgrel:nvidia-kmod-common-lts} |
 
 {changes}
 
@@ -81,10 +84,17 @@ BLACKLIST_VERSIONS = [
     "kernel",
     "mesa-filesystem",
     "gamescope",
+    "bazaar",
+    "ptyxis",
     "gnome-control-center-filesystem",
     "plasma-desktop",
     "atheros-firmware",
+    "nvidia-kmod-common",
+    "nvidia-kmod-common-lts",
 ]
+
+PKG_ALIAS = {
+}
 
 
 def get_images():
@@ -98,7 +108,7 @@ def get_images():
             de = "gnome"
         else:
             de = "kde"
-        
+
         yield img, base, de
 
 
@@ -167,6 +177,13 @@ def get_packages(manifests: dict[str, Any]):
     return packages
 
 
+def is_nvidia(img: str, lts: bool):
+    if lts:
+        return "nvidia" in img and "nvidia-open" not in img and "deck-nvidia" not in img
+    else:
+        return "nvidia-open" in img or "deck-nvidia" in img
+
+
 def get_package_groups(prev: dict[str, Any], manifests: dict[str, Any]):
     common = set()
     others = {k: set() for k in OTHER_NAMES.keys()}
@@ -202,7 +219,7 @@ def get_package_groups(prev: dict[str, Any], manifests: dict[str, Any]):
             if img not in pkg:
                 continue
 
-            if t == "nvidia" and "nvidia" not in base:
+            if t == "nvidia" and "nvidia" not in img:
                 continue
             if t == "kde" and de != "kde":
                 continue
@@ -230,8 +247,10 @@ def get_package_groups(prev: dict[str, Any], manifests: dict[str, Any]):
 def get_versions(manifests: dict[str, Any]):
     versions = {}
     pkgs = get_packages(manifests)
-    for img_pkgs in pkgs.values():
+    for img, img_pkgs in pkgs.items():
         for pkg, v in img_pkgs.items():
+            if is_nvidia(img, lts=True) and "nvidia" in pkg:
+                pkg += "-lts"
             versions[pkg] = re.sub(FEDORA_PATTERN, "", v)
     return versions
 
@@ -250,6 +269,8 @@ def calculate_changes(pkgs: list[str], prev: dict[str, str], curr: dict[str, str
         if pkg in curr and curr.get(pkg, None) in blacklist_ver:
             continue
         if pkg in prev and prev.get(pkg, None) in blacklist_ver:
+            continue
+        if pkg.endswith("-lts"):
             continue
 
         if pkg not in prev:
@@ -370,11 +391,12 @@ def generate_changelog(
     for pkg, v in versions.items():
         if pkg not in prev_versions or prev_versions[pkg] == v:
             changelog = changelog.replace(
-                "{pkgrel:" + pkg + "}", PATTERN_PKGREL.format(version=v)
+                "{pkgrel:" + (PKG_ALIAS.get(pkg, None) or pkg) + "}",
+                PATTERN_PKGREL.format(version=v),
             )
         else:
             changelog = changelog.replace(
-                "{pkgrel:" + pkg + "}",
+                "{pkgrel:" + (PKG_ALIAS.get(pkg, None) or pkg) + "}",
                 PATTERN_PKGREL_CHANGED.format(prev=prev_versions[pkg], new=v),
             )
 

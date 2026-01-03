@@ -54,7 +54,6 @@ Bazzite是使用[Fedora](https://fedoraproject.org/)技术基于[ublue-os/main](
 - 可选的 Valve-inspired GTK3/4 主题对应 SteamOS的Vapor and VGUI2。安装 [Gradience](https://flathub.org/apps/com.github.GradienceTeam.Gradience) 以启用它们。
 - [LatencyFleX](https://github.com/ishitatsuyuki/LatencyFleX)， [vkBasalt](https://github.com/DadSchoorse/vkBasalt)， [MangoHud](https://github.com/flightlessmango/Mangohud)，和 [OBS VkCapture](https://github.com/nowrep/obs-vkcapture) 默认安装并可用。
 - [Patched Switcheroo-Control](https://copr.fedorainfracloud.org/coprs/sentry/switcheroo-control_discrete/) 修复了默认损坏的iGPU/dGPU开关。
-- 支持 [Wallpaper Engine](https://www.wallpaperengine.io/en)。 <sub><sup>(仅限KDE)</sup></sub>
 - 包含[ROM Properties Page shell extension](https://github.com/GerbilSoft/rom-properties) 。
 - 完全支持 [Winesync/Fastsync/NTsync](https://github.com/Frogging-Family/wine-tkg-git/issues/936).
 - 预装[Distrobox](https://github.com/89luca89/distrobox) 。
@@ -128,7 +127,6 @@ rpm-ostree rebase ostree-unverified-registry:ghcr.io/ublue-os/bazzite-nvidia:sta
 - 包括用于磨砂和镜面Steam Deck屏幕的颜色校准显示配置文件。
 - 默认禁用的高级用户功能，包括：
     - 通过[RyzenAdj](https://github.com/FlyGoat/RyzenAdj) 和 [Ryzen SMU](https://gitlab.com/leogx9r/ryzen_smu)提供的Steam Deck的低风险欠压服务进程，参阅`ryzenadj.service` 和 `/etc/default/ryzenadj`。
-    - 限制电池最大充电水平的服务进程，参阅`batterylimit.service` 和 `/etc/default/batterylimit`。<sup><sub>(即使设备关闭也能工作)</sub></sup>
     - 内置超频显示支持。例如添加`GAMESCOPE_OVERRIDE_REFRESH_RATE=40,70` 到 `/etc/environment`。
     - 你的Steam Deck改了32GB内存？享受双倍最大显存，自动启用。<sup><sub>(可以分享你的焊接技巧吗？)</sub></sup>
 - Steam Deck硬件特定的服务可以通过在终端中运行`ujust disable-bios-updates` 和 `ujust disable-firmware-updates` 以禁用。这些服务在非Deck硬件、改装了DeckHD显示屏或改装了32GB内存的Deck上自动禁用。

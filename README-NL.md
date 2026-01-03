@@ -54,7 +54,6 @@ Bazzite is gebouwd van [ublue-os/main](https://github.com/ublue-os/main) en [ubl
 - Met optionele Valve-geïnspireerde GTK3/4 thema's die overeenkomen met Vapor en VGUI2 van SteamOS. Installeer [Gradience](https://flathub.org/apps/com.github.GradienceTeam.Gradience) om die te gebruiken.
 - [LatencyFleX](https://github.com/ishitatsuyuki/LatencyFleX), [vkBasalt](https://github.com/DadSchoorse/vkBasalt), [MangoHud](https://github.com/flightlessmango/Mangohud) en [OBS VkCapture](https://github.com/nowrep/obs-vkcapture) zijn standaard geïnstalleerd en beschikbaar.
 - [Gepatchte Switcheroo-Control](https://copr.fedorainfracloud.org/coprs/sentry/switcheroo-control_discrete/) om gebroken iGPU/dGPU-omschakeling te herstellen.
-- Ondersteuning van [Wallpaper Engine](https://www.wallpaperengine.io/en). <sub><sup>(Alleen met KDE)</sup></sub>
 - [ROM Properties Page shell extension](https://github.com/GerbilSoft/rom-properties) inbegrepen.
 - Volledige ondersteuning van [Winesync/Fastsync/NTsync](https://github.com/Frogging-Family/wine-tkg-git/issues/936).
 - [Distrobox](https://github.com/89luca89/distrobox) voorgeïnstalleerd.
@@ -129,7 +128,6 @@ Varianten voor gebruik als alternatief voor SteamOS op de Steam Deck en voor con
 - Kleur gecalibreerde display profielen voor matte and reflectieven Steam Deck schermen.
 - Standaard uit, power-user opties zoals:
     - Mogelijkheid voor laag-risico undervolting van de Steam Deck en AMD Framework Laptops via [RyzenAdj](https://github.com/FlyGoat/RyzenAdj) en [Ryzen SMU](https://gitlab.com/leogx9r/ryzen_smu), zie `ryzenadj.service` en `/etc/default/ryzenadj`.
-    - Batterij oplaad limiet, zie `batterylimit.service` en `/etc/default/batterylimit`. <sup><sub>(Werkt ook als het apparaat uit is)</sub></sup>
     - Mogelijkheid om het scherm te overclocken. Bijvoorbeeld, voeg `GAMESCOPE_OVERRIDE_REFRESH_RATE=40,70` toe in `/etc/environment`.
     - Heb je 32GB ram in je Steam Deck? Geniet van de dubbelen maximalen VRAM, automatisch ingeschakeld <sup><sub>(Kan je je soldeer skills delen?)</sub></sup>
 - Steam Deck hardware-specifieken services kunnen uit gezet worden met `ujust disable-bios-updates` en `ujust disable-firmware-updates` in de terminal. Dezen staan al uit op non-Deck hardware en op Decks met DeckHD schermen of 32GB RAM mods.
